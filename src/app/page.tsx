@@ -69,7 +69,7 @@ function ProductCard({ product }: { product: Product }) {
       className="group flex flex-col min-w-[220px] w-[220px] flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
     >
       {/* Image */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-white">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-white">
         <Image
           src={product.images[0]}
           alt={product.name}
@@ -138,6 +138,7 @@ function HeroSection() {
         muted
         loop
         playsInline
+        preload="metadata"
         className="absolute inset-0 w-full h-full object-cover object-center"
         aria-hidden
       />
@@ -148,7 +149,7 @@ function HeroSection() {
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 90% 80% at 50% 50%, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.65) 100%)",
+            "radial-gradient(ellipse 90% 80% at 50% 50%, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.70) 100%)",
         }}
       />
 
@@ -229,7 +230,7 @@ function CategoryShowcase({
           </div>
 
           {/* Right: horizontal scroll cards */}
-          <div className="flex-1 overflow-x-auto pb-2 -mx-4 px-4 lg:mx-0 lg:px-0">
+          <div className="flex-1 overflow-x-auto pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 min-h-[300px]">
             <div className="flex gap-4 w-max">
               {products.slice(0, 5).map((product) => (
                 <ProductCard key={product.id} product={product} />
@@ -248,7 +249,7 @@ function PromotionsBanner() {
   return (
     <section className="w-full py-16 bg-foreground text-background">
       <div className="max-w-4xl mx-auto px-4 flex flex-col items-center gap-5 text-center">
-        <span className="text-xs font-bold uppercase tracking-[0.3em] text-background/60">
+        <span className="text-xs font-bold uppercase tracking-[0.3em] text-background/80">
           Ofertas Especiais
         </span>
         <h2 className="font-heading text-3xl md:text-5xl font-bold uppercase leading-tight">
@@ -275,43 +276,52 @@ function PromotionsBanner() {
 
 function StorySection() {
   return (
-    <section className="relative w-full min-h-[480px] flex items-center overflow-hidden">
-      <Image
-        src="/lifestyle/cinto-story.jpg"
-        alt="Cinto de couro artesanal Pimenta Country AJ"
-        fill
-        className="object-cover object-center"
-        sizes="100vw"
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/25 to-transparent" />
+    <section className="w-full bg-stone-900 py-16 sm:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 w-full py-16">
-        <div className="max-w-xl flex flex-col gap-5">
-          <span className="text-accent font-semibold uppercase tracking-widest text-sm">
-            Mais de 30 Anos de Tradição
-          </span>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
-            Uma família, um ofício, uma marca.
-          </h2>
-          <p className="text-white/90 leading-relaxed text-base drop-shadow-[0_1px_6px_rgba(0,0,0,0.8)]">
-            A Pimenta Country AJ nasceu da tradição que o pai de Alexandre
-            plantou décadas atrás. Um ensinamento simples e poderoso: couro
-            bom não engana — ele se prova no uso.
-          </p>
-          <blockquote className="border-l-2 border-accent pl-4 italic text-white/70 text-sm leading-relaxed">
-            "A tradição começou com meu pai e segue até hoje, mantendo o
-            cuidado artesanal em cada detalhe."
-            <footer className="mt-1 not-italic text-white/50 text-xs">
-              — Alexandre José da Silva, fundador
-            </footer>
-          </blockquote>
-          <Link
-            href="/nossa-historia"
-            className="inline-flex items-center gap-2 text-accent font-semibold hover:text-white transition-colors self-start mt-2 group"
-          >
-            Conheça nossa história completa
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </Link>
+          {/* Imagem visível */}
+          <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl">
+            <Image
+              src="/lifestyle/cinto-story.jpg"
+              alt="Cinto de couro artesanal Pimenta Country AJ"
+              width={3200}
+              height={1800}
+              className="w-full h-auto object-contain"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              quality={97}
+            />
+          </div>
+
+          {/* Texto */}
+          <div className="flex flex-col gap-5">
+            <span className="text-accent font-semibold uppercase tracking-widest text-sm">
+              Mais de 30 Anos de Tradição
+            </span>
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-white leading-tight">
+              Uma família, um ofício, uma marca.
+            </h2>
+            <p className="text-white/90 leading-relaxed text-base">
+              A Pimenta Country AJ nasceu da tradição que o pai de Alexandre
+              plantou décadas atrás. Um ensinamento simples e poderoso: couro
+              bom não engana — ele se prova no uso.
+            </p>
+            <blockquote className="border-l-2 border-accent pl-4 italic text-white/70 text-sm leading-relaxed">
+              "A tradição começou com meu pai e segue até hoje, mantendo o
+              cuidado artesanal em cada detalhe."
+              <footer className="mt-1 not-italic text-white/50 text-xs">
+                — Alexandre José da Silva, fundador
+              </footer>
+            </blockquote>
+            <Link
+              href="/nossa-historia"
+              className="inline-flex items-center gap-2 text-accent font-semibold hover:text-white transition-colors self-start mt-2 group"
+            >
+              Conheça nossa história completa
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
+
         </div>
       </div>
     </section>
@@ -364,7 +374,7 @@ function FeaturesSection() {
                 <h3 className="font-heading font-bold text-primary-foreground text-base md:text-lg leading-tight">
                   {feat.title}
                 </h3>
-                <p className="text-primary-foreground/75 text-sm leading-snug">
+                <p className="text-primary-foreground/90 text-sm leading-snug">
                   {feat.description}
                 </p>
               </div>

@@ -73,7 +73,7 @@ export default function NossaHistoriaPage() {
           fill
           priority
           className="object-cover object-center"
-          sizes="100vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 100vw"
         />
         {/* Overlay */}
         <div
@@ -99,10 +99,10 @@ export default function NossaHistoriaPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.35em] text-accent">
                 Pimenta Country AJ
               </p>
-              <h1 className="font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl drop-shadow-lg">
+              <h1 className="font-heading text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)]">
                 Nossa História
               </h1>
-              <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/85 sm:text-xl drop-shadow">
+              <p className="mx-auto max-w-2xl text-lg leading-relaxed text-white/90 sm:text-xl drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
                 Do campo para a cidade — a tradição do artesanato em couro que
                 atravessa gerações e se renova a cada peça.
               </p>

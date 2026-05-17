@@ -42,9 +42,9 @@ export function ProductGallery({ images, productName, badge }: ProductGalleryPro
               type="button"
               aria-label={`Ver foto ${i + 1} de ${productName}`}
               onClick={() => setActiveIndex(i)}
-              className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-lg border-2 bg-muted transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring ${
+              className={`relative aspect-square w-20 shrink-0 overflow-hidden rounded-lg border-2 bg-muted transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring hover:scale-105 hover:shadow-md ${
                 i === activeIndex
-                  ? "border-primary"
+                  ? "border-primary scale-105 shadow-md"
                   : "border-border hover:border-primary/60"
               }`}
             >

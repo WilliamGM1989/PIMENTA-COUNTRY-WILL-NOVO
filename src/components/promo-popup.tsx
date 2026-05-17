@@ -111,7 +111,7 @@ export function PromoPopup() {
           </p>
 
           {/* Subtitle */}
-          <p className="text-sm text-[#C49A6C] -mt-1">
+          <p className="text-sm text-[#E8D4B8] -mt-1">
             Use o código abaixo no checkout:
           </p>
 

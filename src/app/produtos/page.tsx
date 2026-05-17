@@ -463,26 +463,34 @@ export default async function ProdutosPage({ searchParams }: PageProps) {
   return (
     <div className="bg-background min-h-screen">
       {/* ── Hero ── */}
-      <section className="relative w-full min-h-[40vh] flex items-center justify-center overflow-hidden">
-        <Image
-          src="/lifestyle/fabricacao.jpg"
-          alt="Manufatura de cintos de couro artesanais Pimenta Country AJ"
-          fill
-          priority
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 flex flex-col items-center gap-3 px-4 text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-[0.3em] text-white/70">
-            Pimenta Country AJ
-          </p>
-          <h1 className="font-heading text-5xl md:text-6xl font-bold tracking-tight text-white uppercase drop-shadow-lg">
-            Cintos
-          </h1>
-          <p className="text-sm text-white/80 max-w-md mt-1">
-            Couro legítimo feito à mão em Sertanópolis, Paraná. Entrega para todo o Brasil.
-          </p>
+      <section className="relative w-full flex items-center justify-center overflow-hidden bg-stone-950">
+        <div className="relative w-full flex flex-col lg:flex-row items-center justify-center min-h-[60vh]">
+          {/* Imagem visível */}
+          <div className="relative w-full lg:w-1/2 flex justify-center items-center py-8 px-4">
+            <Image
+              src="/lifestyle/hero-produtos.jpg"
+              alt="Capa de celular e canivete artesanal em couro — Pimenta Country AJ"
+              width={1344}
+              height={2400}
+              priority
+              quality={97}
+              className="max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl"
+              sizes="(max-width: 1024px) 90vw, 45vw"
+            />
+          </div>
+
+          {/* Texto */}
+          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start gap-4 px-6 lg:px-12 pb-10 lg:pb-0 text-center lg:text-left">
+            <p className="font-sans text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
+              Pimenta Country AJ
+            </p>
+            <h1 className="font-heading text-5xl md:text-6xl font-bold tracking-tight text-white uppercase drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)]">
+              Nossa Coleção
+            </h1>
+            <p className="text-sm text-white/80 max-w-md">
+              Couro legítimo feito à mão em Sertanópolis, Paraná. Entrega para todo o Brasil.
+            </p>
+          </div>
         </div>
       </section>
 

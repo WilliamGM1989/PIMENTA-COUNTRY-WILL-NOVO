@@ -93,16 +93,17 @@ export default function ContatoPage() {
     <div className="flex flex-col">
 
       {/* ── Hero ── */}
-      <section className="relative py-20 sm:py-28 overflow-hidden">
+      <section className="relative py-20 sm:py-28 overflow-hidden bg-stone-900">
         <Image
           src="/lifestyle/cinto-hero-contato.jpg"
           alt="Cinto de couro artesanal Pimenta Country AJ"
           fill
           priority
-          className="object-cover object-center"
+          className="object-contain object-center scale-75"
           sizes="100vw"
+          quality={100}
         />
-        <div className="absolute inset-0 bg-black/65" />
+        <div className="absolute inset-0 bg-black/50" />
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center gap-4 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-accent">
