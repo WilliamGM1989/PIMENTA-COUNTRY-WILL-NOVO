@@ -423,7 +423,8 @@ export default async function ProdutosPage({ searchParams }: PageProps) {
     genero === "infantil"
       ? genero
       : undefined;
-  const activeCor = cor || undefined;
+  const allColorNames = getAllColors().map((c) => c.name);
+  const activeCor = cor && allColorNames.includes(cor) ? cor : undefined;
   const isPromo = promo === "true";
 
   // Build current URLSearchParams for filter hrefs

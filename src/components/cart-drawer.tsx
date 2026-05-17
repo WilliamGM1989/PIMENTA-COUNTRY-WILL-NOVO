@@ -11,8 +11,7 @@ import {
 } from "@/components/ui/sheet"
 import { useCart } from "@/components/cart-provider"
 import { formatPrice } from "@/lib/products"
-
-const WHATSAPP_NUMBER = "554391432721"
+import { WHATSAPP_NUMBER, MERCADO_PAGO_ALLOWED_HOSTS } from "@/lib/config"
 
 interface CartDrawerProps {
   open: boolean
@@ -49,7 +48,19 @@ export function CartDrawer({ open, onOpenChange }: CartDrawerProps) {
       }
 
       const { init_point } = await response.json()
-      window.location.href = init_point
+
+      // Open Redirect protection: validate domain before redirecting
+      try {
+        const redirectUrl = new URL(init_point as string)
+        const allowed = MERCADO_PAGO_ALLOWED_HOSTS as readonly string[]
+        if (!allowed.includes(redirectUrl.hostname)) {
+          throw new Error('URL de redirecionamento inválida.')
+        }
+      } catch {
+        throw new Error('URL de pagamento inválida. Tente novamente.')
+      }
+
+      window.location.href = init_point as string
     } catch (error) {
       setCheckoutError(
         error instanceof Error ? error.message : 'Erro inesperado. Tente novamente.'

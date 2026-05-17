@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, Cinzel } from "next/font/google";
+import { headers } from "next/headers";
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { CartProvider } from "@/components/cart-provider";
-import { OrganizationSchema, WebSiteSchema } from "@/components/structured-data"
+import { OrganizationSchema, WebSiteSchema } from "@/components/structured-data";
 import { PromoPopup } from "@/components/promo-popup";
+import { CookieConsent } from "@/components/cookie-consent";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -41,7 +43,7 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   verification: {
-    google: "GOOGLE_SEARCH_CONSOLE_VERIFICATION_TOKEN",
+    google: process.env.GOOGLE_VERIFICATION_TOKEN ?? "",
   },
   openGraph: {
     type: "website",
@@ -70,24 +72,27 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
+
   return (
     <html
       lang="pt-BR"
       className={`${inter.variable} ${cinzel.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <OrganizationSchema />
-        <WebSiteSchema />
+        <OrganizationSchema nonce={nonce} />
+        <WebSiteSchema nonce={nonce} />
         <CartProvider>
           <PromoPopup />
           <Header />
           <main className="flex-grow pt-16">{children}</main>
           <Footer />
+          <CookieConsent />
         </CartProvider>
       </body>
     </html>

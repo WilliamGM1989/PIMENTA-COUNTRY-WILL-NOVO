@@ -2,12 +2,9 @@ import Link from "next/link"
 import Image from "next/image"
 import { MessageCircle, Shield, Lock, MapPin, AtSign } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
+import { SITE_LINKS, BUSINESS_INFO } from "@/lib/config"
 
-const WHATSAPP_NUMBER = "554391432721"
-const WHATSAPP_MESSAGE = encodeURIComponent(
-  "Olá! Vim pelo site da Pimenta Country AJ e gostaria de saber mais sobre os produtos."
-)
-const WHATSAPP_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
+const WHATSAPP_HREF = SITE_LINKS.whatsapp
 
 const productLinks = [
   { label: "Todos os Cintos", href: "/produtos" },
@@ -146,7 +143,7 @@ export function Footer() {
             {/* Social */}
             <div className="flex items-center gap-3 pt-1">
               <Link
-                href="https://instagram.com/ajpimentacountry"
+                href={SITE_LINKS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram da Pimenta Country AJ"
@@ -208,9 +205,15 @@ export function Footer() {
 
         <Separator className="my-5" />
 
-        <p className="text-center text-xs text-muted-foreground">
-          &copy; 2026 Pimenta Country AJ. Todos os direitos reservados.
-        </p>
+        <div className="flex flex-col items-center gap-1 text-center text-xs text-muted-foreground">
+          <p>
+            &copy; 2026 {BUSINESS_INFO.name}. Todos os direitos reservados.
+          </p>
+          <p>
+            {BUSINESS_INFO.razaoSocial} — {BUSINESS_INFO.city}/{BUSINESS_INFO.state}
+            {BUSINESS_INFO.cnpj ? ` — CNPJ: ${BUSINESS_INFO.cnpj}` : ""}
+          </p>
+        </div>
       </div>
 
     </footer>

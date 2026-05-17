@@ -29,6 +29,16 @@ function isRateLimited(ip: string): boolean {
   const recent = timestamps.filter((t) => now - t < RATE_LIMIT_WINDOW_MS);
   recent.push(now);
   ipRequestLog.set(ip, recent);
+
+  // Prevent unbounded memory growth: evict stale entries periodically
+  if (ipRequestLog.size > 5_000) {
+    for (const [key, ts] of ipRequestLog) {
+      if (ts.every((t) => now - t >= RATE_LIMIT_WINDOW_MS)) {
+        ipRequestLog.delete(key);
+      }
+    }
+  }
+
   return recent.length > RATE_LIMIT_MAX_REQUESTS;
 }
 
@@ -136,7 +146,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3005';
+    const siteUrl = process.env.SITE_URL ?? 'http://localhost:3005';
     // SECURITY: Use cryptographically random UUID instead of predictable Date.now()
     // Prevents order reference enumeration/guessing attacks
     const externalReference = randomUUID();

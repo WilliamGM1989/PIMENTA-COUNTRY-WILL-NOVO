@@ -3,6 +3,14 @@ import type { BlogPost } from "@/lib/blog";
 
 const BASE_URL = "https://www.pimentacountry.com.br";
 
+// Escapa caracteres perigosos para uso seguro em blocos <script> JSON-LD
+function safeJsonLd(data: unknown): string {
+  return JSON.stringify(data)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026");
+}
+
 // ─── Organization Schema ──────────────────────────────────────────────────────
 
 const organizationSchema = {
@@ -21,11 +29,12 @@ const organizationSchema = {
   sameAs: ["https://instagram.com/ajpimentacountry"],
 };
 
-export function OrganizationSchema() {
+export function OrganizationSchema({ nonce }: { nonce?: string }) {
   return (
     <script
+      nonce={nonce}
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationSchema) }}
     />
   );
 }
@@ -44,11 +53,12 @@ const webSiteSchema = {
   },
 };
 
-export function WebSiteSchema() {
+export function WebSiteSchema({ nonce }: { nonce?: string }) {
   return (
     <script
+      nonce={nonce}
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(webSiteSchema) }}
     />
   );
 }
@@ -62,8 +72,10 @@ export interface BreadcrumbItem {
 
 export function BreadcrumbSchema({
   breadcrumbs,
+  nonce,
 }: {
   breadcrumbs: BreadcrumbItem[];
+  nonce?: string;
 }) {
   const schema = {
     "@context": "https://schema.org",
@@ -78,15 +90,16 @@ export function BreadcrumbSchema({
 
   return (
     <script
+      nonce={nonce}
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
     />
   );
 }
 
 // ─── Product Schema ───────────────────────────────────────────────────────────
 
-export function ProductSchema({ product }: { product: Product }) {
+export function ProductSchema({ product, nonce }: { product: Product; nonce?: string }) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "Product",
@@ -96,10 +109,7 @@ export function ProductSchema({ product }: { product: Product }) {
       img.startsWith("http") ? img : `${BASE_URL}${img}`
     ),
     sku: product.id,
-    brand: {
-      "@type": "Brand",
-      name: "Pimenta Country AJ",
-    },
+    brand: { "@type": "Brand", name: "Pimenta Country AJ" },
     manufacturer: {
       "@type": "Organization",
       name: "Pimenta Country AJ",
@@ -111,9 +121,7 @@ export function ProductSchema({ product }: { product: Product }) {
       },
     },
     category:
-      product.category === "country"
-        ? "Cintos Country Western"
-        : "Cintos Sociais",
+      product.category === "country" ? "Cintos Country Western" : "Cintos Sociais",
     material: "Couro legítimo",
     url: `${BASE_URL}/produtos/${product.slug}`,
     offers: {
@@ -124,36 +132,27 @@ export function ProductSchema({ product }: { product: Product }) {
       availability: product.inStock
         ? "https://schema.org/InStock"
         : "https://schema.org/OutOfStock",
-      seller: {
-        "@type": "Organization",
-        name: "Pimenta Country AJ",
-      },
+      seller: { "@type": "Organization", name: "Pimenta Country AJ" },
       shippingDetails: {
         "@type": "OfferShippingDetails",
-        shippingRate: {
-          "@type": "MonetaryAmount",
-          currency: "BRL",
-          value: "0",
-        },
-        shippingDestination: {
-          "@type": "DefinedRegion",
-          addressCountry: "BR",
-        },
+        shippingRate: { "@type": "MonetaryAmount", currency: "BRL", value: "0" },
+        shippingDestination: { "@type": "DefinedRegion", addressCountry: "BR" },
       },
     },
   };
 
   return (
     <script
+      nonce={nonce}
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
     />
   );
 }
 
 // ─── BlogPost Schema ──────────────────────────────────────────────────────────
 
-export function BlogPostSchema({ post }: { post: BlogPost }) {
+export function BlogPostSchema({ post, nonce }: { post: BlogPost; nonce?: string }) {
   const schema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -162,32 +161,23 @@ export function BlogPostSchema({ post }: { post: BlogPost }) {
     image: post.image.startsWith("http") ? post.image : `${BASE_URL}${post.image}`,
     datePublished: post.date,
     dateModified: post.date,
-    author: {
-      "@type": "Organization",
-      name: "Pimenta Country AJ",
-      url: BASE_URL,
-    },
+    author: { "@type": "Organization", name: "Pimenta Country AJ", url: BASE_URL },
     publisher: {
       "@type": "Organization",
       name: "Pimenta Country AJ",
-      logo: {
-        "@type": "ImageObject",
-        url: `${BASE_URL}/brand/logo.jpg`,
-      },
+      logo: { "@type": "ImageObject", url: `${BASE_URL}/brand/logo.jpg` },
     },
     url: `${BASE_URL}/blog/${post.slug}`,
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${BASE_URL}/blog/${post.slug}`,
-    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${BASE_URL}/blog/${post.slug}` },
     articleSection: post.category,
     inLanguage: "pt-BR",
   };
 
   return (
     <script
+      nonce={nonce}
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{ __html: safeJsonLd(schema) }}
     />
   );
 }

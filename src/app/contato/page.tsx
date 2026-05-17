@@ -1,10 +1,9 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
-import { AtSign, Clock, Mail, MessageCircle, Phone, Send } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+import { AtSign, Clock, Mail, MessageCircle, Phone } from "lucide-react"
+import { ContactForm } from "@/components/contact-form"
+import { SITE_LINKS } from "@/lib/config"
 
 export const metadata: Metadata = {
   title: "Contato | Pimenta Country AJ — Fale Conosco",
@@ -34,11 +33,7 @@ export const metadata: Metadata = {
   },
 }
 
-const WHATSAPP_NUMBER = "554391432721"
-const WHATSAPP_MESSAGE = encodeURIComponent(
-  "Olá! Vim pelo site da Pimenta Country AJ e gostaria de saber mais sobre os produtos."
-)
-const WHATSAPP_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
+const WHATSAPP_HREF = SITE_LINKS.whatsapp
 
 const contactCards = [
   {
@@ -344,98 +339,7 @@ export default function ContatoPage() {
             </div>
 
             {/* Form */}
-            <form
-              action="#"
-              className="flex flex-col gap-5 rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8"
-              aria-label="Formulário de contato"
-            >
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="name"
-                    className="text-sm font-medium text-foreground"
-                  >
-                    Nome <span className="text-destructive" aria-hidden>*</span>
-                  </label>
-                  <Input
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder="Seu nome"
-                    autoComplete="name"
-                    required
-                    className="h-10"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label
-                    htmlFor="phone"
-                    className="text-sm font-medium text-foreground"
-                  >
-                    Telefone / WhatsApp
-                  </label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    placeholder="(00) 00000-0000"
-                    autoComplete="tel"
-                    className="h-10"
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="email"
-                  className="text-sm font-medium text-foreground"
-                >
-                  E-mail <span className="text-destructive" aria-hidden>*</span>
-                </label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="seuemail@exemplo.com"
-                  autoComplete="email"
-                  required
-                  className="h-10"
-                />
-              </div>
-
-              <div className="flex flex-col gap-1.5">
-                <label
-                  htmlFor="message"
-                  className="text-sm font-medium text-foreground"
-                >
-                  Mensagem <span className="text-destructive" aria-hidden>*</span>
-                </label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  placeholder="Escreva sua mensagem, dúvida ou pedido aqui..."
-                  required
-                  rows={5}
-                  className="resize-none min-h-[120px]"
-                />
-              </div>
-
-              <p className="text-xs text-muted-foreground">
-                Campos marcados com{" "}
-                <span className="text-destructive font-medium">*</span> são
-                obrigatórios.
-              </p>
-
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full gap-2 h-11 text-sm font-semibold"
-              >
-                <Send className="h-4 w-4" aria-hidden />
-                Enviar Mensagem
-              </Button>
-            </form>
+            <ContactForm />
 
           </div>
         </div>

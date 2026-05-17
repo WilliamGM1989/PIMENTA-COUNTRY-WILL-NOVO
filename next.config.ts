@@ -1,59 +1,32 @@
 import type { NextConfig } from "next";
 
-const ContentSecurityPolicy = `
-  default-src 'self';
-  script-src 'self' 'unsafe-inline';
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  font-src 'self' https://fonts.gstatic.com;
-  img-src 'self' data: blob: https:;
-  media-src 'self' https:;
-  connect-src 'self' https:;
-  frame-ancestors 'none';
-  base-uri 'self';
-  form-action 'self';
-`
-  .replace(/\n/g, " ")
-  .trim();
+// CSP é gerenciada pelo middleware (src/middleware.ts) com nonces por request.
+// Aqui ficam apenas os demais headers de segurança.
+
+const isProd = process.env.NODE_ENV === "production";
 
 const securityHeaders = [
-  {
-    key: "X-Content-Type-Options",
-    value: "nosniff",
-  },
-  {
-    key: "X-Frame-Options",
-    value: "DENY",
-  },
-  {
-    key: "X-XSS-Protection",
-    value: "1; mode=block",
-  },
-  {
-    key: "Referrer-Policy",
-    value: "strict-origin-when-cross-origin",
-  },
-  {
-    key: "Content-Security-Policy",
-    value: ContentSecurityPolicy,
-  },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "DENY" },
+  // X-XSS-Protection: 0 — header legado; proteção real vem da CSP
+  { key: "X-XSS-Protection", value: "0" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value: "camera=(), microphone=(), geolocation=(), interest-cohort=(), payment=(self \"https://www.mercadopago.com.br\")",
   },
-  {
-    key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains; preload",
-  },
+  // HSTS apenas em produção — em desenvolvimento causaria problemas via HTTP
+  ...(isProd
+    ? [{ key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" }]
+    : []),
 ];
 
 const nextConfig: NextConfig = {
-  // SECURITY: Remove the X-Powered-By: Next.js header to reduce fingerprinting
   poweredByHeader: false,
-  // SECURITY: Do not expose source maps in production builds
   productionBrowserSourceMaps: false,
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: 'http2.mlstatic.com' },
+      { protocol: "https", hostname: "http2.mlstatic.com" },
     ],
   },
   async headers() {
