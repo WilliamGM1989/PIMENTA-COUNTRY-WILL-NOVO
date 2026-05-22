@@ -62,6 +62,7 @@ function ProductCard({ product }: { product: Product }) {
   const hasDiscount =
     product.discountPercent !== undefined && product.discountPercent > 0;
   const showNew = product.isNew || product.badge === "Novo";
+  const isAccessory = product.category === "acessorio" || product.gender === "infantil";
 
   return (
     <Link
@@ -69,12 +70,12 @@ function ProductCard({ product }: { product: Product }) {
       className="group flex flex-col min-w-[220px] w-[220px] flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
     >
       {/* Image */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-white">
+      <div className={`relative ${isAccessory ? "aspect-square" : "aspect-[4/3]"} w-full overflow-hidden rounded-xl bg-white`}>
         <Image
           src={product.images[0]}
           alt={product.name}
           fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className={`${isAccessory ? "object-contain p-3" : "object-cover"} transition-transform duration-500 group-hover:scale-105`}
           sizes="220px"
         />
         {/* Discount badge */}
@@ -121,6 +122,10 @@ function ProductCard({ product }: { product: Product }) {
             </span>
           )}
         </div>
+        {/* CTA que aparece no hover */}
+        <span className="mt-1 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          Ver produto →
+        </span>
       </div>
     </Link>
   );
@@ -229,13 +234,20 @@ function CategoryShowcase({
             </Link>
           </div>
 
-          {/* Right: horizontal scroll cards */}
-          <div className="flex-1 overflow-x-auto pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 min-h-[300px]">
-            <div className="flex gap-4 w-max">
-              {products.slice(0, 5).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+          {/* Right: horizontal scroll cards com fade indicador à direita */}
+          <div className="relative flex-1 min-h-[300px]">
+            <div className="overflow-x-auto pb-2 -mx-4 px-4 lg:mx-0 lg:px-0">
+              <div className="flex gap-4 w-max">
+                {products.slice(0, 5).map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             </div>
+            {/* gradiente indicador de scroll */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-[var(--tw-bg-color,theme(colors.background))] to-transparent"
+            />
           </div>
         </div>
       </div>
@@ -259,7 +271,7 @@ function PromotionsBanner() {
           Até 21% de desconto em peças selecionadas
         </p>
         <p className="text-sm text-background/50">
-          Oferta válida até 15 de maio de 2026
+          Oferta válida até 30 de junho de 2026
         </p>
         <Link
           href="/produtos?promo=true"
@@ -306,7 +318,7 @@ function StorySection() {
               plantou décadas atrás. Um ensinamento simples e poderoso: couro
               bom não engana — ele se prova no uso.
             </p>
-            <blockquote className="border-l-2 border-accent pl-4 italic text-white/70 text-sm leading-relaxed">
+            <blockquote cite="#" className="border-l-2 border-accent pl-4 italic text-white/70 text-sm leading-relaxed">
               "A tradição começou com meu pai e segue até hoje, mantendo o
               cuidado artesanal em cada detalhe."
               <footer className="mt-1 not-italic text-white/50 text-xs">
@@ -499,7 +511,7 @@ function WhatsAppBanner() {
           href={WHATSAPP_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-accent-foreground px-8 py-3 text-base font-bold text-accent shadow-md transition-all hover:brightness-90 hover:scale-105 active:scale-95"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-8 py-3 text-base font-bold text-white shadow-md transition-all hover:bg-[#1ebe5d] hover:scale-105 active:scale-95"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

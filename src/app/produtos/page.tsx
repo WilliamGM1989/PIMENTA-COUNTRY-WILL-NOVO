@@ -88,6 +88,7 @@ function ProductCard({ product }: { product: Product }) {
   const hasDiscount =
     product.discountPercent !== undefined && product.discountPercent > 0;
   const showNew = product.isNew || product.badge === "Novo";
+  const isAccessory = product.category === "acessorio" || product.gender === "infantil";
 
   return (
     <li>
@@ -98,13 +99,13 @@ function ProductCard({ product }: { product: Product }) {
       >
         <div className="h-full flex flex-col overflow-hidden rounded-xl bg-card ring-1 ring-foreground/10 transition-all duration-200 group-hover:shadow-lg group-hover:ring-primary/30">
           {/* Image */}
-          <div className="relative aspect-square w-full overflow-hidden bg-muted">
+          <div className={`relative ${isAccessory ? "aspect-square" : "aspect-[4/3]"} w-full overflow-hidden bg-white`}>
             <Image
               src={product.images[0]}
               alt={product.name}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              className={`${isAccessory ? "object-contain p-3" : "object-cover"} transition-transform duration-300 group-hover:scale-105`}
             />
 
             {/* Discount badge */}
@@ -129,9 +130,9 @@ function ProductCard({ product }: { product: Product }) {
             <div className="absolute bottom-2 right-2">
               <Badge
                 variant="outline"
-                className="bg-card/80 backdrop-blur-sm text-xs capitalize"
+                className="bg-card/80 backdrop-blur-sm text-xs"
               >
-                {product.category}
+                {{ country: "Country", social: "Social", acessorio: "Acessório" }[product.category] ?? product.category}
               </Badge>
             </div>
           </div>
@@ -207,8 +208,13 @@ function Sidebar({
     <aside className="hidden lg:flex flex-col w-56 flex-shrink-0 gap-8">
       {/* Filters heading + clear */}
       <div className="flex items-center justify-between">
-        <h2 className="font-heading text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground">
+        <h2 className="font-heading text-xs font-bold uppercase tracking-[0.25em] text-muted-foreground flex items-center gap-1.5">
           Filtros
+          {hasAnyFilter && (
+            <span className="inline-flex items-center justify-center h-4 w-4 rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+              {[activeCategory, activeGenero, activeCor, isPromo ? "p" : null].filter(Boolean).length}
+            </span>
+          )}
         </h2>
         {hasAnyFilter && (
           <Link
@@ -488,6 +494,7 @@ export default async function ProdutosPage({ searchParams }: PageProps) {
             <h1 className="font-heading text-5xl md:text-6xl font-bold tracking-tight text-white uppercase drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)]">
               Nossa Coleção
             </h1>
+            <div aria-hidden className="w-16 h-0.5 bg-accent mt-1" />
             <p className="text-sm text-white/80 max-w-md">
               Couro legítimo feito à mão em Sertanópolis, Paraná. Entrega para todo o Brasil.
             </p>
@@ -539,14 +546,28 @@ export default async function ProdutosPage({ searchParams }: PageProps) {
 
             {/* Product grid */}
             {filtered.length === 0 ? (
-              <div className="py-24 text-center text-muted-foreground">
-                <p className="text-lg mb-4">Nenhum produto encontrado.</p>
-                <Link
-                  href="/produtos"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Ver todos os produtos
-                </Link>
+              <div className="py-24 text-center flex flex-col items-center gap-4">
+                <p className="text-4xl">🤠</p>
+                <p className="text-lg font-semibold text-foreground">Nenhum produto encontrado.</p>
+                <p className="text-sm text-muted-foreground max-w-xs">
+                  Tente remover os filtros ou explore nossa coleção completa.
+                </p>
+                <div className="flex flex-wrap justify-center gap-3 mt-2">
+                  {hasAnyFilter && (
+                    <Link
+                      href="/produtos"
+                      className="rounded-full border border-border px-5 py-2 text-sm font-medium text-muted-foreground hover:bg-muted transition-colors"
+                    >
+                      Limpar filtros
+                    </Link>
+                  )}
+                  <Link
+                    href="/produtos"
+                    className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:brightness-110 transition-all"
+                  >
+                    Ver coleção completa
+                  </Link>
+                </div>
               </div>
             ) : (
               <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">

@@ -121,7 +121,11 @@ export default async function ProductPage({
           <div className="flex flex-col gap-6">
             {/* Category label */}
             <span className="text-xs font-semibold uppercase tracking-widest text-accent">
-              {product.category === "country" ? "Linha Country" : "Linha Social"}
+              {product.category === "country"
+                ? "Linha Country"
+                : product.category === "acessorio"
+                ? "Linha Acessórios"
+                : "Linha Social"}
             </span>
 
             {/* Name */}
@@ -172,15 +176,15 @@ export default async function ProductPage({
             <div className="rounded-xl border border-border bg-muted/40 p-4">
               <ul className="flex flex-col gap-2 text-sm text-muted-foreground">
                 <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
+                  <span>✈️</span>
                   Frete grátis para todo o Brasil acima de R$&nbsp;300
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
+                  <span>🔄</span>
                   Troca e devolução em até 30 dias
                 </li>
                 <li className="flex items-center gap-2">
-                  <span className="text-accent">✓</span>
+                  <span>🔒</span>
                   Pagamento seguro — Pix, cartão ou boleto
                 </li>
               </ul>
@@ -218,8 +222,8 @@ export default async function ProductPage({
       {related.length > 0 && (
         <section className="border-t border-border bg-muted/30 py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="mb-8 font-heading text-2xl font-bold text-foreground">
-              Produtos Relacionados
+            <h2 className="mb-8 font-heading text-2xl font-bold text-foreground pl-4 border-l-4 border-accent">
+              Você também pode gostar
             </h2>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((rel) => (
