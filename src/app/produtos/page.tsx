@@ -470,35 +470,82 @@ export default async function ProdutosPage({ searchParams }: PageProps) {
   return (
     <div className="bg-background min-h-screen">
       {/* ── Hero ── */}
-      <section className="relative w-full flex items-center justify-center overflow-hidden bg-stone-950">
-        <div className="relative w-full flex flex-col lg:flex-row items-center justify-center min-h-[60vh]">
-          {/* Imagem visível */}
-          <div className="relative w-full lg:w-1/2 flex justify-center items-center py-8 px-4">
-            <Image
-              src="/lifestyle/hero-produtos.jpg"
-              alt="Capa de celular e canivete artesanal em couro — Pimenta Country AJ"
-              width={1344}
-              height={2400}
-              priority
-              quality={97}
-              className="max-h-[70vh] w-auto object-contain rounded-xl shadow-2xl"
-              sizes="(max-width: 1024px) 90vw, 45vw"
-            />
+      <section className="relative w-full overflow-hidden bg-stone-950">
+        <div className="flex flex-col lg:flex-row min-h-[70vh]">
+
+          {/* Esquerda — texto + produto */}
+          <div className="relative w-full lg:w-[52%] flex flex-col items-center justify-center gap-6 py-14 px-8 lg:px-16 bg-stone-950 z-10">
+            {/* badge */}
+            <span className="text-[11px] font-bold uppercase tracking-[0.35em] text-accent">
+              Pimenta Country AJ
+            </span>
+
+            <h1 className="font-heading text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white uppercase leading-none text-center drop-shadow-[0_2px_20px_rgba(0,0,0,0.9)]">
+              Nossa<br />Coleção
+            </h1>
+
+            <div aria-hidden className="w-20 h-[2px] bg-accent rounded-full" />
+
+            <p className="text-sm text-white/75 max-w-sm text-center leading-relaxed">
+              Couro legítimo feito à mão em Sertanópolis, Paraná.<br />
+              Entrega para todo o Brasil.
+            </p>
+
+            {/* Produto flutuante */}
+            <div className="relative mt-4">
+              <Image
+                src="/lifestyle/menino-cowboy.jpg"
+                alt="Menino cowboy com cinto artesanal e capa de celular — Pimenta Country AJ"
+                width={900}
+                height={506}
+                priority
+                quality={97}
+                className="max-h-[42vh] w-auto object-contain drop-shadow-[0_8px_40px_rgba(0,0,0,0.8)] rounded-xl"
+                sizes="(max-width: 1024px) 80vw, 40vw"
+              />
+            </div>
           </div>
 
-          {/* Texto */}
-          <div className="w-full lg:w-1/2 flex flex-col items-center lg:items-start gap-4 px-6 lg:px-12 pb-10 lg:pb-0 text-center lg:text-left">
-            <p className="font-sans text-xs font-semibold uppercase tracking-[0.3em] text-white/60">
-              Pimenta Country AJ
-            </p>
-            <h1 className="font-heading text-5xl md:text-6xl font-bold tracking-tight text-white uppercase drop-shadow-[0_2px_16px_rgba(0,0,0,0.9)]">
-              Nossa Coleção
-            </h1>
-            <div aria-hidden className="w-16 h-0.5 bg-accent mt-1" />
-            <p className="text-sm text-white/80 max-w-md">
-              Couro legítimo feito à mão em Sertanópolis, Paraná. Entrega para todo o Brasil.
-            </p>
+          {/* Direita — lifestyle cowgirl em destaque */}
+          <div className="relative w-full lg:w-[48%] min-h-[50vw] lg:min-h-full overflow-hidden">
+            <Image
+              src="/lifestyle/cowgirl-hero.jpg"
+              alt="Estilo country feminino com cinto artesanal Pimenta Country AJ"
+              fill
+              priority
+              quality={97}
+              className="object-cover object-top"
+              sizes="(max-width: 1024px) 100vw, 48vw"
+            />
+            {/* gradiente esquerdo para fundir com o lado escuro */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(to right, rgb(28 25 23) 0%, transparent 18%)",
+              }}
+            />
+            {/* vinheta inferior sutil */}
+            <div
+              aria-hidden
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background:
+                  "linear-gradient(to top, rgb(28 25 23) 0%, transparent 20%)",
+              }}
+            />
+            {/* selo flutuante sobre a foto */}
+            <div className="absolute bottom-6 left-8 flex flex-col gap-1">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-white/60">
+                Estilo & Tradição
+              </span>
+              <span className="font-heading text-xl font-bold text-white drop-shadow-lg">
+                Cintos Artesanais
+              </span>
+            </div>
           </div>
+
         </div>
       </section>
 

@@ -3,7 +3,8 @@
 import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { Menu, ShoppingBag, MessageCircle, Search, User } from "lucide-react"
+import { usePathname } from "next/navigation"
+import { Menu, ShoppingBag, MessageCircle, User } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -17,14 +18,12 @@ const navLinks = [
   { label: "Home", href: "/" },
   { label: "Cintos", href: "/produtos" },
   { label: "Nossa História", href: "/nossa-historia" },
+  { label: "Blog", href: "/blog" },
   { label: "Contato", href: "/contato" },
 ] as const
 
-const WHATSAPP_NUMBER = "554391432721"
-const WHATSAPP_MESSAGE = encodeURIComponent(
-  "Olá! Vim pelo site da Pimenta Country AJ e gostaria de saber mais sobre os produtos."
-)
-const WHATSAPP_HREF = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`
+import { SITE_LINKS } from "@/lib/config"
+const WHATSAPP_HREF = SITE_LINKS.whatsapp
 
 function BrandLogo() {
   return (
@@ -79,6 +78,7 @@ function WhatsAppLink({ className }: { className?: string }) {
 
 export function Header() {
   const { itemCount: cartCount } = useCart()
+  const pathname = usePathname()
   const [scrolled, setScrolled] = React.useState(false)
   const [mobileOpen, setMobileOpen] = React.useState(false)
   const [cartOpen, setCartOpen] = React.useState(false)
@@ -116,26 +116,28 @@ export function Header() {
           className="hidden md:flex items-center gap-6"
           aria-label="Navegação principal"
         >
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium tracking-wide text-muted-foreground hover:text-foreground transition-colors"
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href)
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={[
+                  "text-sm font-medium tracking-wide transition-colors",
+                  isActive
+                    ? "text-primary border-b-2 border-primary pb-0.5"
+                    : "text-muted-foreground hover:text-foreground",
+                ].join(" ")}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            )
+          })}
         </nav>
 
         {/* Desktop actions */}
         <div className="hidden md:flex items-center gap-3">
-          <button
-            type="button"
-            aria-label="Pesquisar"
-            className="p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
-          >
-            <Search className="h-5 w-5" />
-          </button>
           <Link
             href="/login"
             aria-label="Entrar"

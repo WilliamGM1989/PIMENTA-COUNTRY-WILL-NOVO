@@ -4,15 +4,12 @@ import Link from "next/link";
 import { Shield, Truck, Star, Award } from "lucide-react";
 
 import {
-  getFeaturedProducts,
   getProductsByCategory,
-  getPromoProducts,
   getUnisexAndInfantilProducts,
   getAccessories,
-  formatPrice,
-  type Product,
 } from "@/lib/products";
-import { Badge } from "@/components/ui/badge";
+import { ProductCard } from "@/components/product-card";
+import { SITE_LINKS } from "@/lib/config";
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
@@ -54,82 +51,7 @@ export const metadata: Metadata = {
   },
 };
 
-const WHATSAPP_URL = "https://wa.me/554391432721";
-
-// ─── Shared Product Card ──────────────────────────────────────────────────────
-
-function ProductCard({ product }: { product: Product }) {
-  const hasDiscount =
-    product.discountPercent !== undefined && product.discountPercent > 0;
-  const showNew = product.isNew || product.badge === "Novo";
-  const isAccessory = product.category === "acessorio" || product.gender === "infantil";
-
-  return (
-    <Link
-      href={`/produtos/${product.slug}`}
-      className="group flex flex-col min-w-[220px] w-[220px] flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl"
-    >
-      {/* Image */}
-      <div className={`relative ${isAccessory ? "aspect-square" : "aspect-[4/3]"} w-full overflow-hidden rounded-xl bg-white`}>
-        <Image
-          src={product.images[0]}
-          alt={product.name}
-          fill
-          className={`${isAccessory ? "object-contain p-3" : "object-cover"} transition-transform duration-500 group-hover:scale-105`}
-          sizes="220px"
-        />
-        {/* Discount badge */}
-        {hasDiscount && (
-          <div className="absolute top-2 left-2">
-            <span className="inline-flex items-center rounded px-1.5 py-0.5 text-xs font-bold bg-destructive text-white leading-none">
-              -{product.discountPercent}%
-            </span>
-          </div>
-        )}
-        {/* NOVO badge */}
-        {!hasDiscount && showNew && (
-          <div className="absolute top-2 left-2">
-            <Badge variant="default" className="text-xs font-bold">
-              NOVO
-            </Badge>
-          </div>
-        )}
-      </div>
-
-      {/* Info */}
-      <div className="mt-2 flex flex-col gap-0.5 px-0.5">
-        {product.ref && (
-          <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
-            Ref. {product.ref}
-          </span>
-        )}
-        <p className="text-sm font-semibold text-foreground line-clamp-2 leading-snug group-hover:text-primary transition-colors">
-          {product.name}
-        </p>
-        <div className="flex items-baseline gap-1.5 mt-1">
-          {hasDiscount && product.originalPrice ? (
-            <>
-              <span className="text-xs text-muted-foreground line-through">
-                {formatPrice(product.originalPrice)}
-              </span>
-              <span className="text-sm font-bold text-destructive">
-                {formatPrice(product.price)}
-              </span>
-            </>
-          ) : (
-            <span className="text-sm font-bold text-primary">
-              {formatPrice(product.price)}
-            </span>
-          )}
-        </div>
-        {/* CTA que aparece no hover */}
-        <span className="mt-1 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          Ver produto →
-        </span>
-      </div>
-    </Link>
-  );
-}
+const WHATSAPP_URL = SITE_LINKS.whatsapp;
 
 // ─── Hero ────────────────────────────────────────────────────────────────────
 
@@ -206,18 +128,19 @@ function CategoryShowcase({
   href,
   products,
   bg = "bg-background",
+  fadeFrom = "rgb(254 250 245)",
 }: {
   title: string;
   description: string;
   href: string;
-  products: Product[];
+  products: ReturnType<typeof getProductsByCategory>;
   bg?: string;
+  fadeFrom?: string;
 }) {
   return (
     <section className={`w-full py-24 ${bg}`}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-          {/* Left: title + description + link */}
           <div className="lg:w-64 flex-shrink-0 flex flex-col justify-center gap-4">
             <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground uppercase leading-tight">
               {title}
@@ -234,7 +157,6 @@ function CategoryShowcase({
             </Link>
           </div>
 
-          {/* Right: horizontal scroll cards com fade indicador à direita */}
           <div className="relative flex-1 min-h-[300px]">
             <div className="overflow-x-auto pb-2 -mx-4 px-4 lg:mx-0 lg:px-0">
               <div className="flex gap-4 w-max">
@@ -243,10 +165,12 @@ function CategoryShowcase({
                 ))}
               </div>
             </div>
-            {/* gradiente indicador de scroll */}
             <div
               aria-hidden
-              className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-[var(--tw-bg-color,theme(colors.background))] to-transparent"
+              className="pointer-events-none absolute right-0 top-0 h-full w-16"
+              style={{
+                background: `linear-gradient(to left, ${fadeFrom}, transparent)`,
+              }}
             />
           </div>
         </div>
@@ -400,7 +324,7 @@ function FeaturesSection() {
 
 // ─── Instagram Section ────────────────────────────────────────────────────────
 
-const INSTAGRAM_URL = "https://www.instagram.com/ajpimentacountry/";
+const INSTAGRAM_URL = SITE_LINKS.instagram;
 
 function InstagramSection() {
   return (
@@ -555,6 +479,7 @@ export default function HomePage() {
         href="/produtos?categoria=social"
         products={socialProducts}
         bg="bg-muted"
+        fadeFrom="rgb(245 237 224)"
       />
 
       <CategoryShowcase
@@ -571,6 +496,7 @@ export default function HomePage() {
         href="/produtos?categoria=acessorio"
         products={accessories}
         bg="bg-muted"
+        fadeFrom="rgb(245 237 224)"
       />
 
       <PromotionsBanner />
